@@ -1,6 +1,6 @@
 {
   "name": "spectacle-docs",
-  "version": "0.9.13",
+  "version": "1.0.3",
   "description": "Generate beautiful static API documentation from OpenAPI/Swagger 2.0 specifications",
   "preferGlobal": true,
   "bin": {
@@ -15,6 +15,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sourcey/spectacle.git"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "keywords": [
     "openapi",
@@ -46,6 +49,7 @@
     "grunt-contrib-handlebars": "^0.11.0",
     "grunt-contrib-uglify": "^0.11.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-embed": "^0.2.1",
     "grunt-prettify": "^0.4.0",
     "grunt-sass": "*",
     "handlebars": "^4.0.5",
@@ -61,7 +65,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "grunt-contrib-jshint": "^1.1.0"
+    "grunt-contrib-jshint": "^1.1.0",
+    "mocha": "^3.5.3"
   }
 }

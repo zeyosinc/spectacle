@@ -17,13 +17,15 @@ var fs = require('fs'),
 tmp.setGracefulCleanup()
 
 var defaults = {
-    silent: false,
+    quiet: false,
     port: 4400,
+    portLive: 4401,
     targetDir: path.resolve(process.cwd(), 'public'),
     targetFile: 'index.html',
     appDir: path.resolve(__dirname, 'app'),
     configFile: path.resolve(__dirname, 'app/lib/config.js'),
-    cacheDir: tmp.dirSync({ unsafeCleanup: true, prefix: 'spectacle-' }).name
+    cacheDir: tmp.dirSync({ unsafeCleanup: true, prefix: 'spectacle-' }).name,
+    oneFile: false
 };
 function resolveOptions(options) {
     var opts = _.extend({}, defaults, options)
@@ -59,7 +61,7 @@ module.exports = function (options) {
     //= Setup Grunt to do the heavy lifting
 
     grunt.initConfig(_.merge({ pkg: package }, config))
-    if(opts.silent) {
+    if(opts.quiet) {
         grunt.log.writeln = function() {}
         grunt.log.write = function() {}
         grunt.log.header = function() {}
@@ -83,6 +85,7 @@ module.exports = function (options) {
     grunt.loadNpmTasks('grunt-compile-handlebars')
     grunt.loadNpmTasks('grunt-prettify')
     grunt.loadNpmTasks('grunt-sass')
+    grunt.loadNpmTasks('grunt-embed')
 
     process.chdir(cwd)
 
@@ -119,23 +122,26 @@ module.exports = function (options) {
     grunt.registerTask('develop', ['server', 'watch'])
 
     // Reload template data when watch files change
-    grunt.event.on('watch', function(action, filepath) {
-        // if (filepath == config.specFile)
-        grunt.config.set('compile-handlebars.compile.templateData', loadData())
+    grunt.event.on('watch', function() {
+        try {
+            grunt.config.set('compile-handlebars.compile.templateData', loadData())
+        } catch (e) {
+            grunt.fatal(e);
+        }
     })
 
     // Report, etc when all tasks have completed.
     var donePromise = new Promise(function(resolve, reject) {
       grunt.task.options({
           error: function(e) {
-              if(!opts.silent) {
+              if(!opts.quiet) {
                   console.warn('Task error:', e)
               }
               // TODO: fail here or push on?
               reject(e)
           },
           done: function() {
-              if(!opts.silent) {
+              if(!opts.quiet) {
                   console.log('All tasks complete')
               }
               resolve()
@@ -161,8 +167,11 @@ module.exports = function (options) {
             grunt.task.run('copy:logo')
         }
         grunt.task.run('templates')
-        if (opts.developmentMode) {
+        if (opts.developmentMode || opts.developmentModeLive) {
             grunt.task.run('develop')
+        }
+        if (opts.oneFile) {
+            grunt.task.run('embed')
         }
     }
 

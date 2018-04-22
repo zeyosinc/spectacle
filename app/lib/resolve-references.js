@@ -106,7 +106,8 @@ function replaceReference(cwd, top, obj, context) {
   if(contexts.definition(context)) {
     if(!top.definitions) { top.definitions = {}; }
     if(!top.definitions[external]) { top.definitions[external] = referenced; }
-    Object.assign(obj, { "$ref": "#/definitions/"+external.replace("/", "%2F") })
+    // Object.assign(obj, { "$ref": "#/definitions/"+external.replace("/", "%2F") })
+    Object.assign(obj, { "$ref": external })
   }
   else if(contexts.path(context)) {
     Object.keys(referenced).forEach(function(method) {
@@ -170,7 +171,7 @@ function replaceRefs(cwd, top, obj, context) {
     if(val.$ref) {
 
       if(localReference(val.$ref)) {
-        if((cwd === top["x-spec-path"]) || (cwd === path.posix.dirname(top["x-spec-path"]))) { continue; }
+        if((cwd === top["x-spec-path"]) || (cwd === path.dirname(top["x-spec-path"]))) { continue; }
         throw new Error(
           "Can't deal with internal references in external files yet.  Got: '"+val.$ref+"'.")
       }

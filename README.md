@@ -22,6 +22,7 @@ See a demo of Spectacle in action here: [http://cheesestore.github.io](http://ch
 * **OpenAPI/Swagger 2.0 support**: Support for the latest OpenAPI/Swagger specification.
 * **Highly configurable**: Easily configurable Handlebars templates and SCSS styles so you can add your own design and flavour without going bald. See [Custom Builds](#custom-builds)
 * **Markdown support**: Render markdown written in any of your API descriptions.
+* **Remote file references**: Support for swagger specs split across multiple files.
 * **Clean responsive design**: Responsive HTML5 and CSS3 layout built with [Foundation 6](http://foundation.zurb.com/sites.html) that looks great on all devices and screen sizes.
 * **Embed into your existing website**: An embedded option so that generate partial docs without a HTML `<body>` for convenient integration into your existing website.
 * **Live preview developer mode**: Development mode that starts a local HTTP server with a file watcher and live reload so you can preview live changes in your browser as you update your spec.
@@ -47,7 +48,7 @@ Your generated documentation will be located in the `public` directory by defaul
 
 ### Docker
 
-A basic Docker script is included that allows Spectacle to be run from the inside, not outside. It's useful, for instance, in a Gitlab CI pipeline. Thanks @alexeiaguiar.
+[Docker](https://hub.docker.com/r/sourcey/spectacle/) images are included that allow Spectacle to be run from the inside. It's useful, for instance, in a Gitlab CI pipeline. Thanks @alexeiaguiar.
 
 How to use it: `docker run -it sourcey/spectacle /bin/sh`
 
@@ -62,24 +63,28 @@ $ spectacle -h
 
   Options:
 
-    -h, --help                output usage information
-    -V, --version             output the version number
-    -C, --disable-css         omit CSS generation (default: false)
-    -J, --disable-js          omit JavaScript generation (default: false)
-    -e, --embeddable          omit the HTML <body/> and generate the documentation content only (default: false)
-    -d, --development-mode    start HTTP server with the file watcher and live reload (default: false)
-    -s, --start-server        start the HTTP server without any development features
-    -p, --port <dir>          the port number for the HTTP server to listen on (default: 4400)
-    -t, --target-dir <dir>    the target build directory (default: public)
-    -f, --target-file <file>  the target build HTML file (default: index.html)
-    -a, --app-dir <dir>       the application source directory (default: app)
-    -l, --logo-file <file>    specify a custom logo file (default: null)
-    -c, --config-file <file>  specify a custom configuration file (default: app/lib/config.js)
+    -h, --help                   output usage information
+    -V, --version                output the version number
+    -C, --disable-css            omit CSS generation (default: false)
+    -J, --disable-js             omit JavaScript generation (default: false)
+    -e, --embeddable             omit the HTML <body/> and generate the documentation content only (default: false)
+    -d, --development-mode       start HTTP server with the file watcher (default: false)
+    -D, --development-mode-live  start HTTP server with the file watcher and live reload (default: false)
+    -s, --start-server           start the HTTP server without any development features
+    -p, --port <port>            the port number for the HTTP server to listen on (default: 4400)
+    -P, --port-live <port>       the port number for the live reload to listen on (default: 4401)
+    -t, --target-dir <dir>       the target build directory (default: public)
+    -f, --target-file <file>     the target build HTML file (default: index.html)
+    -a, --app-dir <dir>          the application source directory (default: app)
+    -l, --logo-file <file>       specify a custom logo file (default: null)
+    -c, --config-file <file>     specify a custom configuration file (default: app/lib/config.js)
 ```
 
 Most options are self explanatory, but the following options warrant some further explanation:
 
-* **--development-mode** `-d`: This option starts a development server with a file watcher and live reload, and will automatically regenerate your docs when any of your spec or app files change.
+* **--development-mode** `-d`: This option starts a development server with a file watcher, and will automatically regenerate your docs when any of your spec or app files change.
+
+* **--development-mode-live** `-D`: This option starts a development server with a file watcher and live reload, and will automatically regenerate your docs when any of your spec or app files change.
 
 * **--start-server** `-s`: This option starts a production server without any development options enabled that serves the contents of your `--target-dir`.
 
