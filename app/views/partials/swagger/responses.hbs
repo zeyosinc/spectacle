@@ -77,7 +77,7 @@
                   <tbody>
                   {{#each headers}}
                     {{#if $ref}}
-                      {{> swagger/responseHeaderRow header=(json-schema-resolve-ref $ref) name=@key}}
+                      {{> swagger/responseHeaderRow header=(schemaResolveReference $ref) name=@key}}
                     {{else}}
                       {{> swagger/responseHeaderRow header=. name=@key}}
                     {{/if}}
