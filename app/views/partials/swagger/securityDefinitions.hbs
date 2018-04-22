@@ -8,6 +8,21 @@
   <!-- <h1 id="security" data-traverse-target="security">Security</h1> -->
   <h1 id="authentication" data-traverse-target="authentication">Authentication</h1>
 
+  {{#if securityIntro}}
+    <div class="doc-row">
+      <div class="doc-copy">
+          {{md securityIntro}}
+      </div>
+      {{#if securityExample}}
+        <div class="doc-examples">
+          <section>
+              {{md securityExample}}
+          </section>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+
   {{#each securityDefinitions}}
     <div id="security-definition-{{@key}}" class="panel">
       <div class="doc-row">
